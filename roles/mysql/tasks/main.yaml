@@ -1,28 +1,33 @@
 ---
-- name: Instalar MariaDB
+- name: Ensure MariaDB is installed
   yum:
     name:
       - mariadb-server
       - mariadb
     state: present
 
-- name: Habilitar y arrancar MariaDB
+- name: Ensure MariaDB is started and enabled
   systemd:
     name: mariadb
     enabled: yes
     state: started
+  register: mariadb_service
 
-- name: Instalar dependencias para Ansible MySQL
+- name: Ensure PyMySQL dependency is installed
   yum:
     name:
       - python3-PyMySQL
     state: present
-
-- name: Configurar contraseña root (temporal para pruebas)
+    
+- name: Ensure root user exists with password and privileges
   mysql_user:
     name: root
     host_all: yes
     password: "root123"
-    priv: "*.*:ALL"
+    priv: "*.*:ALL,GRANT"
     state: present
-  login_unix_socket: /var/lib/mysql/mysql.sock
+    login_user: root
+    login_password: "root123"
+    login_unix_socket: /var/lib/mysql/mysql.sock
+    check_implicit_admin: yes
+  when: mariadb_service.changed
