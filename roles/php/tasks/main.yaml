@@ -1,0 +1,25 @@
+---
+- name: Instalar repositorios de Remi para PHP
+  yum:
+    name:
+      - http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+    state: present
+
+- name: Instalar PHP y módulos necesarios
+  yum:
+    name:
+      - php
+      - php-mysql
+      - php-fpm
+      - php-cli
+      - php-common
+      - php-gd
+      - php-mbstring
+      - php-xml
+    state: present
+
+- name: Habilitar y arrancar PHP-FPM
+  systemd:
+    name: php-fpm
+    enabled: yes
+    state: started

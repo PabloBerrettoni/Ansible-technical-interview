@@ -1,0 +1,16 @@
+---
+- name: Instalar EPEL repo (necesario para Nginx)
+  yum:
+    name: epel-release
+    state: present
+
+- name: Instalar Nginx
+  yum:
+    name: nginx
+    state: present
+
+- name: Habilitar y arrancar Nginx
+  systemd:
+    name: nginx
+    enabled: yes
+    state: started

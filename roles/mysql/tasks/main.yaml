@@ -1,0 +1,24 @@
+---
+- name: Instalar repositorio de MySQL 5.7
+  yum:
+    name: https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+    state: present
+
+- name: Instalar MySQL server
+  yum:
+    name: mysql-community-server
+    state: present
+
+- name: Habilitar y arrancar MySQL
+  systemd:
+    name: mysqld
+    enabled: yes
+    state: started
+
+- name: Configurar contraseña root (temporal para pruebas)
+  mysql_user:
+    name: root
+    host_all: yes
+    password: "root123"
+    priv: "*.*:ALL"
+    state: present

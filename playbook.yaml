@@ -1,0 +1,8 @@
+---
+- name: Instalar LEMP stack en CentOS 7
+  hosts: local
+  become: true
+  roles:
+    - nginx
+    - mysql
+    - php
