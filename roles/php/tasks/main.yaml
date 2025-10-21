@@ -5,7 +5,17 @@
       - http://rpms.remirepo.net/enterprise/remi-release-7.rpm
     state: present
 
-- name: Instalar PHP y módulos necesarios
+- name: Instalar yum-utils (necesario para manejar repos)
+  yum:
+    name: yum-utils
+    state: present
+
+- name: Habilitar repositorio Remi PHP 7.4
+  command: yum-config-manager --enable remi-php74
+  args:
+    warn: false
+
+- name: Instalar PHP 7.4 y módulos necesarios
   yum:
     name:
       - php
