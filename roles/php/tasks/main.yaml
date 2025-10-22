@@ -1,21 +1,21 @@
 ---
-- name: Instalar repositorios de Remi para PHP
+- name: Install Remi repositories for PHP
   yum:
     name:
       - http://rpms.remirepo.net/enterprise/remi-release-7.rpm
     state: present
 
-- name: Instalar yum-utils (necesario para manejar repos)
+- name: Install yum-utils (required to manage repositories)
   yum:
     name: yum-utils
     state: present
 
-- name: Habilitar repositorio Remi PHP 7.4
+- name: Enable Remi PHP 7.4 repository
   command: yum-config-manager --enable remi-php74
   args:
     warn: false
 
-- name: Instalar PHP 7.4 y módulos necesarios
+- name: Install PHP 7.4 and required modules
   yum:
     name:
       - php
@@ -28,7 +28,7 @@
       - php-xml
     state: latest
 
-- name: Configurar PHP-FPM para trabajar con Nginx
+- name: Configure PHP-FPM to work with Nginx
   copy:
     src: www.conf
     dest: /etc/php-fpm.d/www.conf
@@ -37,7 +37,7 @@
     mode: '0644'
   notify: restart php-fpm
 
-- name: Crear directorio de sesiones PHP
+- name: Create PHP session directory
   file:
     path: /var/lib/php/session
     state: directory
@@ -45,7 +45,7 @@
     group: nginx
     mode: '0770'
 
-- name: Habilitar y arrancar PHP-FPM
+- name: Enable and start PHP-FPM
   systemd:
     name: php-fpm
     enabled: yes

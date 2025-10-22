@@ -1,16 +1,14 @@
 # LEMP Stack Ansible Automation
 
-Este proyecto instala Nginx, MySQL y PHP (LEMP stack) en CentOS 7 usando Ansible.
+This project installs Nginx, MySQL, and PHP (LEMP stack) on CentOS 7 using Ansible.
 
-## Requisitos
+## Requirements
 - CentOS 7
-- Ansible instalado
-- Instalar paquete 'python2-PyMySQL'.
+- Ansible installed
 
-## Cómo correr
-1. Clonar o descomprimir el proyecto.
-2. Ejecutar el playbook:
+## How to run
+1. Clone or unzip the project.
+2. Run the playbook:
 
 ```bash
 ansible-playbook -i hosts playbook.yaml
-```
