@@ -1,15 +1,27 @@
 ---
-- name: Instalar EPEL repo (necesario para Nginx)
-  yum:
-    name: epel-release
-    state: present
-
-- name: Instalar Nginx
+- name: Ensure Nginx is installed
   yum:
     name: nginx
     state: present
 
-- name: Habilitar y arrancar Nginx
+- name: Ensure Nginx configuration is in place
+  copy:
+    src: default.conf
+    dest: /etc/nginx/conf.d/default.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart nginx
+
+- name: Create PHP info test file
+  copy:
+    content: "<?php phpinfo(); ?>"
+    dest: /usr/share/nginx/html/info.php
+    owner: nginx
+    group: nginx
+    mode: '0644'
+    
+- name: Ensure Nginx is started and enabled
   systemd:
     name: nginx
     enabled: yes

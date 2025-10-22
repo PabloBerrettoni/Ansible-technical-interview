@@ -5,7 +5,7 @@
       - mariadb-server
       - mariadb
     state: present
-
+    
 - name: Ensure MariaDB is started and enabled
   systemd:
     name: mariadb
@@ -18,7 +18,7 @@
     name:
       - python3-PyMySQL
     state: present
-    
+
 - name: Ensure root user exists with password and privileges
   mysql_user:
     name: root
@@ -26,8 +26,22 @@
     password: "root123"
     priv: "*.*:ALL,GRANT"
     state: present
-    login_user: root
-    login_password: "root123"
     login_unix_socket: /var/lib/mysql/mysql.sock
     check_implicit_admin: yes
   when: mariadb_service.changed
+
+- name: Remove anonymous MySQL users
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+    login_user: root
+    login_password: "root123"
+    login_unix_socket: /var/lib/mysql/mysql.sock
+- name: Remove MySQL test database
+  mysql_db:
+    name: test
+    state: absent
+    login_user: root
+    login_password: "root123"
+    login_unix_socket: /var/lib/mysql/mysql.sock

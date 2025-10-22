@@ -26,7 +26,24 @@
       - php-gd
       - php-mbstring
       - php-xml
-    state: present
+    state: latest
+
+- name: Configurar PHP-FPM para trabajar con Nginx
+  copy:
+    src: www.conf
+    dest: /etc/php-fpm.d/www.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart php-fpm
+
+- name: Crear directorio de sesiones PHP
+  file:
+    path: /var/lib/php/session
+    state: directory
+    owner: nginx
+    group: nginx
+    mode: '0770'
 
 - name: Habilitar y arrancar PHP-FPM
   systemd:
